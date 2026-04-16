@@ -1,0 +1,201 @@
+/* ═══════════════════════════════════════════════════════════
+   PaintStrokes — animated brush-stroke background
+   ═══════════════════════════════════════════════════════════ */
+
+.ps-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ps-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Brand colors por elemento — iguais em todos os tones ── */
+
+/* Pincelada larga: ciano da logo */
+.ps-brush1  { stroke: #00bcd4; }
+
+/* Pincelada fina: dourado da logo */
+.ps-brush2  { stroke: #ffc107; }
+
+/* Traço diagonal: laranja da logo */
+.ps-slash   { stroke: #ff6f00; }
+
+/* Curva bezier (caneta): ciano claro */
+.ps-bezier  { stroke: #4dd0e1; }
+
+/* Linhas de handle: dourado */
+.ps-handle  { stroke: #ffc107; }
+
+/* Pontos âncora: ciano */
+.ps-dot     { stroke: #00bcd4; }
+
+/* Pingos de tinta: cores alternadas da paleta */
+.ps-drip1   { stroke: #00bcd4; }   /* ciano */
+.ps-drip2   { stroke: #ffc107; }   /* dourado */
+.ps-drip3   { stroke: #ff6f00; }   /* laranja */
+
+/* Linhas guia: ciano claro, bem sutil */
+.ps-grid    { stroke: #4dd0e1; }
+
+/* ── Opacidades por tone (ajuste de contraste) ────────────── */
+/* light bg: pinceladas um pouco mais visíveis */
+.ps-light .ps-brush1 { --peak: 0.18; }
+.ps-light .ps-brush2 { --peak: 0.14; }
+.ps-light .ps-slash  { --peak: 0.14; }
+.ps-light .ps-bezier { --peak: 0.30; }
+.ps-light .ps-handle { --peak: 0.25; }
+.ps-light .ps-dot    { --peak: 0.45; }
+.ps-light .ps-drip1  { --peak: 0.20; }
+.ps-light .ps-drip2  { --peak: 0.18; }
+.ps-light .ps-drip3  { --peak: 0.16; }
+
+/* dark bg: ligeiramente mais intensas pois o fundo absorve */
+.ps-dark .ps-brush1  { --peak: 0.22; }
+.ps-dark .ps-brush2  { --peak: 0.18; }
+.ps-dark .ps-slash   { --peak: 0.18; }
+.ps-dark .ps-bezier  { --peak: 0.35; }
+.ps-dark .ps-handle  { --peak: 0.30; }
+.ps-dark .ps-dot     { --peak: 0.55; }
+.ps-dark .ps-drip1   { --peak: 0.28; }
+.ps-dark .ps-drip2   { --peak: 0.24; }
+.ps-dark .ps-drip3   { --peak: 0.20; }
+
+/* ═══════════════════════════════════════════════════════════
+   BRUSH STROKES — draw in, hold, fade, loop
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes paintBrush {
+  0%   { stroke-dashoffset: var(--len, 1600); opacity: 0; }
+  6%   { opacity: 1; }
+  55%  { stroke-dashoffset: 0; opacity: var(--peak, 0.09); }
+  75%  { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: var(--len, 1600); opacity: 0; }
+}
+
+@keyframes inkDrip {
+  0%   { stroke-dashoffset: 220; opacity: 0; }
+  8%   { opacity: 1; }
+  60%  { stroke-dashoffset: 0; opacity: var(--peak, 0.12); }
+  78%  { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 220; opacity: 0; }
+}
+
+@keyframes penDraw {
+  0%   { stroke-dashoffset: 2400; opacity: 0; }
+  8%   { opacity: 1; }
+  65%  { stroke-dashoffset: 0; opacity: var(--peak, 0.18); }
+  80%  { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 2400; opacity: 0; }
+}
+
+@keyframes dotPop {
+  0%, 10% { opacity: 0; transform: scale(0); }
+  20%      { opacity: 1; transform: scale(1.3); }
+  30%      { transform: scale(1); }
+  65%      { opacity: var(--peak, 0.3); }
+  80%      { opacity: 0; }
+  100%     { opacity: 0; }
+}
+
+@keyframes gridFade {
+  0%   { opacity: 0; }
+  20%  { opacity: 0.04; }
+  60%  { opacity: 0.04; }
+  80%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* ── Wide brush sweep 1 ───────────────────────────────────── */
+.ps-brush1 {
+  stroke-dasharray: 1600;
+  stroke-dashoffset: 1600;
+  --len: 1600;
+  --peak: 0.07;
+  animation: paintBrush 14s cubic-bezier(0.37, 0, 0.63, 1) 0s infinite;
+}
+
+/* ── Thinner brush sweep 2 ────────────────────────────────── */
+.ps-brush2 {
+  stroke-dasharray: 1600;
+  stroke-dashoffset: 1600;
+  --len: 1600;
+  --peak: 0.05;
+  animation: paintBrush 16s cubic-bezier(0.37, 0, 0.63, 1) 4s infinite;
+}
+
+/* ── Diagonal slash ───────────────────────────────────────── */
+.ps-slash {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  --len: 600;
+  --peak: 0.06;
+  animation: paintBrush 12s cubic-bezier(0.37, 0, 0.63, 1) 7s infinite;
+}
+
+/* ── Thin pen bezier ──────────────────────────────────────── */
+/* Note: this path uses its own stroke-dasharray (8 7) for the dashes,
+   so we drive the overall dashoffset with a large value to "reveal" dashes. */
+.ps-bezier {
+  stroke-dasharray: 8, 7, 2000;   /* dash gap, then one huge gap to hide tail */
+  stroke-dashoffset: 2000;
+  --peak: 0.22;
+  animation: penDraw 18s ease 2s infinite;
+}
+
+/* ── Handle lines ─────────────────────────────────────────── */
+.ps-handle {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  --len: 200;
+  --peak: 0.18;
+  animation: paintBrush 18s ease 2.5s infinite;
+}
+
+/* ── Anchor dots ──────────────────────────────────────────── */
+.ps-dot {
+  --peak: 0.35;
+  transform-origin: center;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.ps-dot1 { animation: dotPop 18s ease 3.0s infinite; }
+.ps-dot2 { animation: dotPop 18s ease 3.4s infinite; }
+.ps-dot3 { animation: dotPop 18s ease 3.8s infinite; }
+.ps-dot4 { animation: dotPop 18s ease 4.2s infinite; }
+
+/* ── Ink drips ────────────────────────────────────────────── */
+.ps-drip1 {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  --peak: 0.10;
+  animation: inkDrip 10s cubic-bezier(0.4, 0, 0.2, 1) 1s infinite;
+}
+
+.ps-drip2 {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  --peak: 0.08;
+  animation: inkDrip 11s cubic-bezier(0.4, 0, 0.2, 1) 5s infinite;
+}
+
+.ps-drip3 {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  --peak: 0.07;
+  animation: inkDrip 9s cubic-bezier(0.4, 0, 0.2, 1) 8.5s infinite;
+}
+
+/* ── Design grid guides ───────────────────────────────────── */
+.ps-grid {
+  stroke-dasharray: 4, 8;
+  animation: gridFade 20s ease 3s infinite;
+}
+

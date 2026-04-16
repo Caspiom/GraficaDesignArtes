@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import PaintStrokes from './PaintStrokes'
 import './Portfolio.css'
+import './PaintStrokes.css'
 
 const portfolioItems = [
   { src: '/portfolio/2.jpg', alt: 'Cartão de visita com leão colorido', category: 'Cartão de Visita' },
@@ -22,15 +24,26 @@ const categories = ['Todos', ...new Set(portfolioItems.map((i) => i.category))]
 
 export default function Portfolio() {
   const [active, setActive] = useState('Todos')
+  const [displayItems, setDisplayItems] = useState(portfolioItems)
+  const [fading, setFading] = useState(false)
   const [lightbox, setLightbox] = useState(null)
 
-  const filtered = active === 'Todos' ? portfolioItems : portfolioItems.filter((i) => i.category === active)
+  const handleFilter = (cat) => {
+    if (cat === active) return
+    setFading(true)
+    setTimeout(() => {
+      setActive(cat)
+      setDisplayItems(cat === 'Todos' ? portfolioItems : portfolioItems.filter((i) => i.category === cat))
+      setFading(false)
+    }, 220)
+  }
 
   const openLightbox = (item) => setLightbox(item)
   const closeLightbox = () => setLightbox(null)
 
   return (
     <section id="portfolio" className="portfolio">
+      <PaintStrokes tone="light" />
       <div className="container">
         <h2 className="section-title">
           Nosso <span className="highlight">Portfólio</span>
@@ -45,25 +58,26 @@ export default function Portfolio() {
             <button
               key={cat}
               className={`filter-btn${active === cat ? ' active' : ''}`}
-              onClick={() => setActive(cat)}
+              onClick={() => handleFilter(cat)}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        <div className="portfolio-grid">
-          {filtered.map((item, idx) => (
+        <div className={`portfolio-grid${fading ? ' fading' : ''}`}>
+          {displayItems.map((item, idx) => (
             <div
-              key={idx}
+              key={item.src + active}
               className="portfolio-item"
+              style={{ '--item-i': idx }}
               onClick={() => openLightbox(item)}
             >
               <img src={item.src} alt={item.alt} loading="lazy" />
               <div className="portfolio-overlay">
                 <span className="portfolio-category">{item.category}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="28" height="28">
-                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6M7 10h6"/>
+                  <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6M7 10h6" />
                 </svg>
               </div>
             </div>
@@ -75,7 +89,7 @@ export default function Portfolio() {
         <div className="lightbox" onClick={closeLightbox}>
           <button className="lightbox-close" onClick={closeLightbox} aria-label="Fechar">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="24" height="24">
-              <path d="M18 6L6 18M6 6l12 12"/>
+              <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>

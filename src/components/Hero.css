@@ -364,6 +364,90 @@
   50% { opacity: 0.8; }
 }
 
+/* ── Typewriter ─────────────────────────────────────────── */
+.hero-typewriter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.hero-typewriter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.hero-typewriter-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cyan-light);
+  font-family: 'Courier New', 'Courier', monospace;
+  min-height: 1.4em;
+  min-width: 2ch;
+}
+
+.hero-cursor {
+  display: inline-block;
+  color: var(--gold);
+  animation: cursorBlink 0.9s step-end infinite;
+  font-weight: 400;
+  margin-left: 1px;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── CMYK Palette strip ─────────────────────────────────── */
+.hero-palette-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  height: 52px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.hero-palette-chip {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(100%);
+  animation: chipRise 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)
+    calc(0.3s + var(--chip-i) * 0.06s) forwards;
+}
+
+@keyframes chipRise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-palette-color {
+  flex: 1;
+}
+
+.hero-palette-label {
+  font-size: 0.48rem;
+  color: rgba(255,255,255,0.6);
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  padding: 2px 1px;
+  background: rgba(0,0,0,0.35);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .hero-content {

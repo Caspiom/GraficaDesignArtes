@@ -1,4 +1,6 @@
+import PaintStrokes from './PaintStrokes'
 import './About.css'
+import './PaintStrokes.css'
 
 const values = [
   {
@@ -42,6 +44,7 @@ const values = [
 export default function About() {
   return (
     <section id="sobre" className="about">
+      <PaintStrokes tone="dark" />
       <div className="about-wave-top" aria-hidden="true" />
       <div className="about-wave-bottom" aria-hidden="true" />
       <div className="container about-content">

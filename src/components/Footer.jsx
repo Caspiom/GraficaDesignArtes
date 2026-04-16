@@ -103,7 +103,9 @@ export default function Footer() {
         <div className="container">
           <p>© {new Date().getFullYear()} Design Artes Gráficas. Todos os direitos reservados.</p>
           <p>Mais de 25 anos servindo com qualidade e criatividade.</p>
-          <p>Desenvolvido por <a href="https://lucasgasparidev.vercel.app/" target="_blank" rel="noopener noreferrer" className="footer-dev-link">Gaspari Dev</a></p>
+          <p className="footer-dev-cta">Precisa de um site profissional para o seu negócio?{' '}
+            <a href="https://lucasgasparidev.vercel.app/" target="_blank" rel="noopener noreferrer" className="footer-dev-link">Fale com a Gaspari Dev</a>
+          </p>
         </div>
       </div>
     </footer>
