@@ -120,6 +120,7 @@ export default function Services() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="service-cta"
+                onClick={() => gtag('event', 'conversion', { send_to: 'AW-17417219897/1oDyCKj0gvwaELnelvFA', value: 1.0, currency: 'BRL' })}
               >
                 Pedir orçamento
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">

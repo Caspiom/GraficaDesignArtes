@@ -43,7 +43,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               className="navbar-cta"
-              onClick={handleLinkClick}
+              onClick={() => { handleLinkClick(); gtag('event', 'conversion', { send_to: 'AW-17417219897/1oDyCKj0gvwaELnelvFA', value: 1.0, currency: 'BRL' }); }}
             >
               Solicitar Orçamento
             </a>
