@@ -199,3 +199,16 @@
   animation: gridFade 20s ease 3s infinite;
 }
 
+/* ── Mobile: disable all SVG animations ──────────────────── */
+@media (max-width: 768px) {
+  .ps-brush1, .ps-brush2, .ps-slash, .ps-bezier,
+  .ps-handle, .ps-drip1, .ps-drip2, .ps-drip3, .ps-grid {
+    animation: none !important;
+    opacity: 0;
+  }
+  .ps-dot1, .ps-dot2, .ps-dot3, .ps-dot4 {
+    animation: none !important;
+    opacity: 0;
+  }
+}
+

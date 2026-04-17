@@ -172,6 +172,8 @@ export default function Hero() {
               src="/logo/logo.jpeg"
               alt="Design Artes Gráficas - Leão colorido"
               className="hero-logo-img"
+              fetchpriority="high"
+              decoding="async"
             />
           </div>
 

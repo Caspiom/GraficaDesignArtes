@@ -14,8 +14,17 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', onScroll)
+    let ticking = false
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 60)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -25,7 +34,7 @@ export default function Navbar() {
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="navbar-container">
         <a href="#inicio" className="navbar-logo" onClick={handleLinkClick}>
-          <img src="/logo/logo.jpeg" alt="Design Artes Gráficas" />
+          <img src="/logo/logo.jpeg" alt="Design Artes Gráficas" loading="lazy" decoding="async" />
           <span className="navbar-brand">
             <strong>Design</strong> Artes Gráficas
           </span>

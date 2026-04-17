@@ -517,3 +517,55 @@
     font-size: 0.875rem;
   }
 }
+
+/* ── Mobile performance: disable GPU-heavy effects ────────── */
+@media (max-width: 768px) {
+  .hero-blob {
+    filter: none;
+    animation: none !important;
+    opacity: 0.1;
+  }
+
+  .particle {
+    display: none;
+  }
+
+  .hero-badge,
+  .btn-outline,
+  .hero-float {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .hero-ring {
+    animation: none !important;
+  }
+
+  .hero-logo-img {
+    animation: none;
+    box-shadow: 0 0 40px rgba(0,188,212,0.3);
+  }
+
+  .hero-float {
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob,
+  .hero-ring,
+  .hero-logo-img,
+  .badge-dot,
+  .hero-float,
+  .hero-scroll-indicator,
+  .scroll-arrow,
+  .hero-palette-chip,
+  .hero-cursor {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .particle {
+    display: none;
+  }
+}
